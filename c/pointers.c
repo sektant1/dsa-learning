@@ -16,7 +16,7 @@ void birthdayBad(int age)
 }
 
 // pass by reference (set)
-void birthday(int* age)
+void birthday(int *age)
 {
     // dereference
     (*age)++;
@@ -31,6 +31,12 @@ int main()
     birthday(&age);
 
     printf("%d\n", age);
+
+    int  meaning_of_life  = 42;
+    int *pointer_to_mol   = &meaning_of_life;
+    int  value_at_pointer = *pointer_to_mol;
+    printf("%d\n", value_at_pointer);
+    // value_at_pointer = 42
 
     return 0;
 }

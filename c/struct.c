@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+ There are a bunch of complicated rules and heuristics that different compilers
+ use to determine how to lay out your structs. But to oversimplify:
+ The fields of a struct are laid out in memory contiguously (next to each
+ other) Structs can vary in size depending on how they are laid out.
+ */
+
 typedef struct
 {
     char  name[50];

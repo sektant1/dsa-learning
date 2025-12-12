@@ -1,71 +1,55 @@
-/*
-Return Value:
-malloc() returns a void* pointer to the beginning of the
-allocated memory block. This pointer should be cast to the appropriate data type
-for use in your program. If memory allocation fails (e.g., insufficient memory),
-malloc() returns NULL.
-
-Uninitialized Memory:
-The memory allocated by malloc() is uninitialized, meaning it contains
-"garbage" values from previous memory usage. You must explicitly initialize this
-memory if you require specific values.
-
-Heap Allocation:
-malloc() allocates memory from the heap, a region of memory available for
-dynamic allocation. This contrasts with stack memory, which is used for local
-variables and function call information and has a more limited and fixed size.
-
-Deallocation with free():
-Memory allocated with malloc() must be explicitly deallocated using the free()
-function when it is no longer needed. Failure to free() allocated memory leads
-to memory leaks, where memory remains reserved but inaccessible, potentially
-causing performance issues or program crashes over time.
-*/
-
 #include <stdio.h>
-#include <stdlib.h>  // Required for malloc and free
+
+#define NELEMS(x) (sizeof(x) / sizeof((x)[0]))
 
 int main()
 {
-    // malloc() = A function in C that dynamically allocates a specified number
-    // of bytes in memory
+    int numbers[5] = {1, 2, 3, 4, 5};
 
-    // malloc() = uma funcao do C que aloca dinamicamente determinada quantia de
-    // bytes na memoria
+    // Accessing elements using array indexing
+    printf("numbers[2] = %d\n", numbers[2]);  // Output: 3
 
-    // tamanho fixo
-    // char notas[5] = {0};
-    // mas e se nao sabemos o tamanho?
+    // Accessing elements using pointers
+    printf("*(numbers + 2) = %d\n", *(numbers + 2));  // Output: 3
 
-    int quantia = 0;
-    printf("Insira a quantidade de notas: ");
-    scanf("%d", &quantia);
-    // %d indica que um valor sera tratado como inteiro decimal
-    // %c indica que um valor sera tratado como caracter
+    // Pointer arithmetic
+    int *ptr = numbers;
+    printf("Pointer ptr points to numbers[0]: %d\n", *ptr);  // Output: 1
+    ptr += 2;
+    printf("Pointer ptr points to numbers[2]: %d\n", *ptr);  // Output: 3
 
-    char* notas = malloc(quantia * sizeof(char));
+    typedef struct Coordinate
+    {
+        int x;
+        int y;
+        int z;
+    } coordinate_t;
 
-    if (notas == NULL) {
-        printf("Falha ao alocar memoria!\n");
-        return 1;  // codigo de saida do programa
-    }
+    coordinate_t points[3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 
-    for (int i = 0; i < quantia; i++) {
-        printf("Insira a nota: #%d: ", i + 1);
-        scanf(" %c", &notas[i]);
-    }
+    printf("points[1].x = %d, points[1].y = %d, points[1].z = %d\n",
+           points[1].x,
+           points[1].y,
+           points[1].z);
+    // points[1].x = 4, points[1].y = 5, points[1].z = 6
 
-    for (int i = 0; i < quantia; i++) {
-        printf("%c ", notas[i]);
-    }
+    coordinate_t *ptr2 = points;
 
-    free(notas);  // retornando o espaco 'alugado' na memoria pro OS
-    notas =
-        NULL;  // evita ponteiros pendentes, q sao ponteiros que apontam para um
-               // local na memoria que nao eh mais utilizado ou ja foi liberado,
-               // e tentar acessar uma memoria ja desalocada leva a undefined
-               // behaviour(comp indefinido) que pode levar a falhas de
-               // segmentacao, crashs, vulnerabilidades de seguranca etc
+    printf("ptr2[1].x = %d, ptr2[1].y = %d, ptr2[1].z = %d\n",
+           (ptr2 + 1)->x,
+           (ptr2 + 1)->y,
+           (ptr2 + 1)->z);
+    // ptr[1].x = 4, ptr[1].y = 5, ptr[1].z = 6
+
+    int arr[] = {1, 2, 3, 4, 5};
+
+    // Calculate the number of elements
+    // sizeof(arr) gives the total size of the array in bytes (e.g., 20)
+    // sizeof(arr[0]) gives the size of one element in bytes (e.g., 4)
+    size_t length = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Number of elements in the array: %zu\n", length);
+    printf("Number of elements in the array: %zu\n", NELEMS(arr));
 
     return 0;
 }
