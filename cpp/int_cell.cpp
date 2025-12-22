@@ -64,7 +64,7 @@ int int_cell::read() const
 
 void int_cell::write(int value)
 {
-    std::cout << "Writing cell with value: " << m_stored_value << "\n";
+    std::cout << "Writing cell with value: " << value << "\n";
     m_stored_value = value;
 }
 
@@ -79,6 +79,18 @@ int main()
 
     int_cell cell4 {};
     cell4.write(cell3.read());
+
+    int       cell_size = 10;
+    int_cell* m;
+
+    m = new int_cell[cell_size];
+
+    for (int i = 0; i < cell_size; i++) {
+        m[i].write(i);
+        m[i].read();
+    }
+
+    delete (m);
 
     return 0;
 }

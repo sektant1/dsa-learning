@@ -12,10 +12,10 @@ public:
     // implemented just for learning purposes.
 
     int_cell();                            // Default ctor
+    ~int_cell() = default;                 // Destructor
     explicit int_cell(int initial_value);  // Param ctor
     int_cell(const int_cell& rhs);         // Copy ctor
     int_cell(int_cell&& rhs) noexcept;     // Move ctor
-    ~int_cell() = default;                 // Destructor
 
     int_cell& operator=(const int_cell& rhs);      // Copy Assignment ctor
     int_cell& operator=(int_cell&& rhs) noexcept;  // Move Assignment ctor
