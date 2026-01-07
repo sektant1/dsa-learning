@@ -25,17 +25,12 @@
 // const_iterator, and its associated begin() and end() methods.
 
 #include <algorithm>
+#include <iostream>
 
 template<typename T>
 class Vector
 {
-    int m_size;
-    int m_capacity;
-    T*  m_elements = nullptr;
-
 public:
-    static const int k_spare_capacity = 16;
-
     explicit Vector(int init_size = 0)
         : m_size {init_size}
         , m_capacity {init_size + k_spare_capacity}
@@ -59,8 +54,6 @@ public:
         return *this;
     }
 
-    ~Vector() { delete[] m_elements; }
-
     Vector(Vector&& rhs) noexcept
         : m_size {rhs.m_size}
         , m_capacity {rhs.m_capacity}
@@ -79,6 +72,8 @@ public:
 
         return *this;
     }
+
+    ~Vector() { delete[] m_elements; }
 
     T& operator[](int index) { return m_elements[index]; }
 
@@ -131,20 +126,40 @@ public:
         m_elements[m_size++] = std::move(elem);
     }
 
-    void pop_back() { --m_size; }
+    void pop_back()
+    {
+        if (!empty()) {
+            --m_size;
+        }
+    }
+
+    void clear() { resize(0); }
+
+    T& front() { return m_elements[0] };
+
+    const T& front() const { return m_elements[0] };
+
+    T& back() { return m_elements[m_size - 1]; }
 
     const T& back() const { return m_elements[m_size - 1]; }
 
     typedef T*       iterator;
     typedef const T* const_iterator;
 
-    iterator start() { return &m_elements[0]; }
+    iterator begin() { return &m_elements[0]; }
 
     iterator end() { return &m_elements[size()]; }
 
-    const_iterator start() const { return &m_elements[0]; }
+    const_iterator begin() const { return &m_elements[0]; }
 
     const_iterator end() const { return &m_elements[size()]; }
+
+private:
+    int m_size;
+    int m_capacity;
+    T*  m_elements = nullptr;
+
+    static const int k_spare_capacity = 16;
 };
 
 #endif  // VECTOR_H
