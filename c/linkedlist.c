@@ -14,6 +14,7 @@ typedef struct node
 {
     int          value;
     struct node* next;
+    struct node* prev;
 } node_t;
 
 void printList(node_t* head)
@@ -41,6 +42,7 @@ node_t* create_new_node(int value)
     node_t* result = malloc(sizeof(node_t));
     result->value  = value;
     result->next   = NULL;
+    result->prev   = NULL;
     return result;
 }
 
@@ -51,9 +53,17 @@ node_t* insert_at_head(node_t** head, node_t* node_to_insert)
     return node_to_insert;
 }
 
+node_t* insert_at_tail(node_t** tail, node_t* node_to_insert)
+{
+    node_to_insert->prev = *tail;
+    *tail                = node_to_insert;
+    return node_to_insert;
+}
+
 void insert_after_node(node_t* previous_node, node_t* newnode)
 {
     newnode->next       = previous_node->next;
+    newnode->prev       = previous_node;
     previous_node->next = newnode;
 }
 
@@ -67,6 +77,17 @@ node_t* find_node(node_t* head, int value)
         tmp = tmp->next;
     }
     return NULL;
+}
+
+void delete_node(node_t* head, int value)
+{
+    node_t* tmp = head;
+    while (tmp != NULL) {
+        if (tmp->value == value) {
+            tmp = NULL;
+        }
+        tmp = tmp->next;
+    }
 }
 
 int main()
